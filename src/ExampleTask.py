@@ -18,13 +18,13 @@ class TestTask(luigi.Task):
 		"""
 
 		pm.execute_notebook(
-   			'Pipeline POC.ipynb',
-   			self.output().path,
+   			'template_notebook.ipynb',
+   			'parameterized_output_notebook_{0}.ipynb'.format(self.date),
    		parameters = dict(filename=self.input_filename, output_file='output_{0}.txt'.format(self.date))
 		)
 
 		# write to self.output to signal end of task/pipeline
-		
+
 		with self.output().open('w') as out_file:
 			out_file.write('done')
 
@@ -32,4 +32,4 @@ class TestTask(luigi.Task):
 		"""
 		Arbitrary output file to track Luigi Task completion.
 		"""
-		return luigi.LocalTarget('test_target_output_{0}.ipynb'.format(self.date))
+		return luigi.LocalTarget('marker_file_{0}.txt'.format(self.date))

@@ -14,15 +14,15 @@ We decided to test [Papermill](https://github.com/nteract/papermill), which is a
 
 ## Requirements
 We used the following setup for our POC
-. Container-based Jupyter from `jupyter/docker-stacks`.
-. `papermill==0.15.1`
-. `luigi==2.7.9`
+> Container-based Jupyter from `jupyter/docker-stacks`.
+> `papermill==0.15.1`
+> `luigi==2.7.9`
 
 ## Putting It All Together
 We discovered we could still use Luigi to orchestrate/resolve dependencies among different tasks that could be executed in a Jupyter notebook
 by using the Papermill Python API from within a Luigi `run()` method. As a very basic example:
 
-```
+```python
 import papermill as pm 
 import luigi
 
@@ -39,3 +39,12 @@ class TestTask(luigi.Task):
    		parameters = dict(filename=self.input_filename, output_file='output_{0}.txt'.format(self.date))
 		)
 ```
+
+## Examples
+
+> `template_notebook.ipynb` : Shows how to set default parameters in the cell `tag` and how to log (record) output to a dataframe.
+> `example_output_notebook_2018-10-30.ipynb' : Example of a notebook run after being passed Luigi parameters.
+> `example_output_with_exception_2018-09-02.ipynb` : Shows how a notebook that raises an Exception is written out. We were able to use this to confirm that a notebook with errors will signal a failure in the Luigi task pipleine.
+> `example_explore_nb_dataframe.ipynb` : Demonstration of how to explore the output of an output notebook from a separate notebook.
+
+
